@@ -1,0 +1,200 @@
+# Quick Start Installation Guide
+
+## Prerequisites Check
+Before you begin, make sure you have:
+- ✅ PHP 7.4 or higher
+- ✅ MySQL 5.7 or higher  
+- ✅ Apache/Nginx web server
+- ✅ phpMyAdmin (optional but recommended)
+
+## 5-Minute Setup
+
+### Step 1: Extract Files
+Extract the `qr-restaurant-system` folder to your web server:
+- **XAMPP**: `C:/xampp/htdocs/qr-restaurant-system`
+- **WAMP**: `C:/wamp64/www/qr-restaurant-system`
+- **Linux**: `/var/www/html/qr-restaurant-system`
+
+### Step 2: Create Database
+1. Open phpMyAdmin: http://localhost/phpmyadmin
+2. Click "New" to create a database
+3. Database name: `qr_restaurant_system`
+4. Click "Import" tab
+5. Choose file: `database.sql`
+6. Click "Go"
+
+### Step 3: Configure Database Connection
+Edit `config/database.php`:
+```php
+private $host = "localhost";
+private $db_name = "qr_restaurant_system";
+private $username = "root";          // Change if different
+private $password = "";              // Add your MySQL password
+```
+
+### Step 4: Set Site URL
+Edit `config/config.php`:
+```php
+define('SITE_URL', 'http://localhost/qr-restaurant-system');
+```
+
+### Step 5: Install QR Code Library
+
+**Option A - Manual Download:**
+1. Download from: https://sourceforge.net/projects/phpqrcode/
+2. Extract to: `vendor/phpqrcode/`
+
+**Option B - Composer (if installed):**
+```bash
+cd qr-restaurant-system
+composer require phpqrcode/phpqrcode
+```
+
+### Step 6: Set Folder Permissions
+**For Linux/Mac:**
+```bash
+chmod 777 uploads/
+chmod 777 uploads/qr_codes/
+chmod 777 uploads/menu_images/
+chmod 777 uploads/logos/
+```
+
+**For Windows:**
+Right-click folders → Properties → Security → Edit → Allow "Full control"
+
+### Step 7: Access the System
+
+**Admin Login:**
+- URL: http://localhost/qr-restaurant-system/admin/login.php
+- Email: `admin@restaurant.com`
+- Password: `password`
+
+**⚠️ IMPORTANT:** Change the default password immediately after first login!
+
+## Quick Test
+
+1. Login as admin
+2. Add a test restaurant:
+   - Name: "Test Restaurant"
+   - Email: "test@restaurant.com"
+   - Password: "test123"
+3. Login to restaurant panel with these credentials
+4. Add some menu items
+5. View the QR code
+6. Open menu.php?r=1 to test customer view
+
+## Payment Setup (Optional for Testing)
+
+### Paystack Setup (for Visa/Mastercard)
+1. Sign up at https://paystack.com
+2. Go to Settings → API Keys & Webhooks
+3. Copy your test keys:
+   - Public Key (pk_test_xxx)
+   - Secret Key (sk_test_xxx)
+4. Update in `config/config.php`:
+```php
+define('PAYSTACK_PUBLIC_KEY', 'pk_test_xxxxx');
+define('PAYSTACK_SECRET_KEY', 'sk_test_xxxxx');
+```
+
+### Mobile Money Setup
+1. Contact your aggregator (Hubtel, Flutterwave, etc.)
+2. Get test API credentials
+3. Update `config/config.php` and `includes/payment.php`
+
+## Common Issues & Solutions
+
+### "Database connection error"
+- Check MySQL is running
+- Verify database name and credentials in `config/database.php`
+- Make sure database was imported successfully
+
+### "QR Code not generating"
+- Install phpqrcode library
+- Check write permissions on uploads/qr_codes/
+- Verify GD extension is enabled in PHP
+
+### "Page not found" or "404 Error"
+- Check SITE_URL in config.php matches your actual URL
+- Verify .htaccess file exists (for Apache)
+- Make sure mod_rewrite is enabled
+
+### Images not uploading
+- Check write permissions on upload folders (777)
+- Verify upload_max_filesize in php.ini (at least 10M)
+- Check post_max_size in php.ini
+
+## Production Deployment Checklist
+
+Before going live:
+- [ ] Change default admin password
+- [ ] Update SITE_URL to production domain
+- [ ] Enable HTTPS
+- [ ] Use live payment API keys
+- [ ] Disable error display
+- [ ] Set secure folder permissions (755 for folders, 644 for files)
+- [ ] Set up regular database backups
+- [ ] Configure SSL certificate
+
+## Testing the System
+
+### Test as Admin:
+1. ✅ Login to admin panel
+2. ✅ Add a restaurant
+3. ✅ View restaurant list
+4. ✅ Suspend/activate restaurant
+
+### Test as Restaurant:
+1. ✅ Login to restaurant panel
+2. ✅ Add menu categories
+3. ✅ Add menu items with images
+4. ✅ Generate QR code
+5. ✅ Print QR code
+6. ✅ View dashboard statistics
+
+### Test as Customer:
+1. ✅ Scan QR code (or visit menu.php?r=1)
+2. ✅ Browse menu
+3. ✅ Add items to cart
+4. ✅ Select dine-in/takeaway
+5. ✅ Complete checkout
+6. ✅ Make test payment
+
+## Need Help?
+
+1. Check README.md for detailed documentation
+2. Review database.sql for schema details
+3. Check PHP error logs
+4. Verify all files were extracted correctly
+
+## System Requirements
+
+**Minimum:**
+- PHP 7.4
+- MySQL 5.7
+- 100MB disk space
+- 512MB RAM
+
+**Recommended:**
+- PHP 8.0+
+- MySQL 8.0
+- 500MB disk space
+- 1GB RAM
+- SSL certificate
+
+## Next Steps
+
+After installation:
+1. Change default admin password
+2. Set up your first restaurant
+3. Create menu categories and items
+4. Generate and print QR codes
+5. Test the complete ordering flow
+6. Configure payment gateways
+7. Set up email notifications (optional)
+
+---
+
+🎉 **You're all set! Your QR Restaurant System is ready to use.**
+
+For detailed documentation, see README.md

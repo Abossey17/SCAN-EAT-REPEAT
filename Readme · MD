@@ -1,0 +1,394 @@
+# QR Restaurant Management System
+
+A comprehensive PHP-based restaurant management system with QR code menu ordering, payment processing (Visa & Mobile Money), and detailed reporting.
+
+## Features
+
+### Admin Features
+- ✅ Add, suspend, or delete restaurants
+- ✅ Manage all restaurants from central dashboard
+- ✅ View system-wide statistics
+- ✅ Monitor all orders across restaurants
+- ✅ Generate system reports
+
+### Restaurant Features
+- ✅ QR Code generation for contactless menu viewing
+- ✅ Print-ready QR codes for display
+- ✅ Complete menu management (add/edit/delete items)
+- ✅ Category organization
+- ✅ Price management and updates
+- ✅ Order management with status tracking
+- ✅ Detailed reports:
+  - Daily reports
+  - Weekly reports
+  - Monthly reports
+  - Yearly reports
+- ✅ Top-selling items analysis
+- ✅ Revenue tracking by order type (dine-in/takeaway)
+
+### Customer Features
+- ✅ Scan QR code to view menu
+- ✅ Select dine-in or takeaway
+- ✅ Browse menu by categories
+- ✅ Add items to cart with quantity control
+- ✅ Place orders with customer information
+- ✅ Payment options:
+  - Visa/Mastercard (via Paystack)
+  - Mobile Money (MTN, Vodafone, AirtelTigo)
+- ✅ Order confirmation
+
+## Technology Stack
+
+- **Backend**: PHP 7.4+
+- **Database**: MySQL 5.7+
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Payment Gateway**: Paystack (for cards), Mobile Money APIs
+- **QR Code**: PHP QR Code library
+- **Charts**: Chart.js
+
+## Installation
+
+### Prerequisites
+- PHP 7.4 or higher
+- MySQL 5.7 or higher
+- Apache/Nginx web server
+- Composer (for dependencies)
+
+### Step 1: Clone or Download
+```bash
+# Extract the qr-restaurant-system folder to your web server directory
+# For XAMPP: C:/xampp/htdocs/
+# For WAMP: C:/wamp64/www/
+```
+
+### Step 2: Database Setup
+1. Open phpMyAdmin or MySQL command line
+2. Import the database:
+```bash
+mysql -u root -p < database.sql
+```
+Or import via phpMyAdmin by selecting the `database.sql` file
+
+### Step 3: Configuration
+
+#### Database Configuration
+Edit `config/database.php`:
+```php
+private $host = "localhost";
+private $db_name = "qr_restaurant_system";
+private $username = "root";          // Your MySQL username
+private $password = "";              // Your MySQL password
+```
+
+#### Payment Gateway Configuration
+Edit `config/config.php`:
+
+**For Paystack (Visa/Mastercard):**
+1. Sign up at https://paystack.com
+2. Get your API keys from Dashboard > Settings > API Keys & Webhooks
+3. Replace in config.php:
+```php
+define('PAYSTACK_PUBLIC_KEY', 'pk_live_xxxxxxxxxxxxx');
+define('PAYSTACK_SECRET_KEY', 'sk_live_xxxxxxxxxxxxx');
+```
+
+**For Mobile Money:**
+1. Contact your Mobile Money aggregator (e.g., Hubtel, Flutterwave, DPO)
+2. Get API credentials
+3. Replace in config.php:
+```php
+define('MOMO_API_KEY', 'your_api_key');
+define('MOMO_API_SECRET', 'your_api_secret');
+```
+
+#### Site Configuration
+Update `config/config.php`:
+```php
+define('SITE_URL', 'http://localhost/qr-restaurant-system');
+// Change to your actual domain in production
+```
+
+### Step 4: Install Dependencies
+
+#### PHP QR Code Library
+Download phpqrcode from: https://sourceforge.net/projects/phpqrcode/
+Extract to: `vendor/phpqrcode/`
+
+Or install via Composer:
+```bash
+composer require phpqrcode/phpqrcode
+```
+
+### Step 5: Set Permissions
+```bash
+chmod 777 uploads/
+chmod 777 uploads/qr_codes/
+chmod 777 uploads/menu_images/
+chmod 777 uploads/logos/
+```
+
+### Step 6: Access the System
+
+**Admin Panel:**
+- URL: http://localhost/qr-restaurant-system/admin/login.php
+- Default Email: admin@restaurant.com
+- Default Password: password
+- **⚠️ IMPORTANT: Change the default password immediately!**
+
+**Restaurant Panel:**
+- URL: http://localhost/qr-restaurant-system/restaurant/login.php
+- Create restaurants via admin panel first
+
+## Usage Guide
+
+### Admin Workflow
+
+1. **Login** to admin panel
+2. **Add New Restaurant**:
+   - Navigate to Restaurants → Add New
+   - Fill in restaurant details
+   - System auto-generates QR code
+3. **Manage Restaurants**:
+   - View all restaurants
+   - Suspend/Activate as needed
+   - Delete if required
+4. **Monitor Orders**: View all orders system-wide
+5. **Generate Reports**: Access system-wide analytics
+
+### Restaurant Workflow
+
+1. **Login** to restaurant panel
+2. **Setup Menu**:
+   - Create categories (Appetizers, Main Course, Desserts, etc.)
+   - Add menu items with prices and images
+   - Update availability status
+3. **Display QR Code**:
+   - Navigate to QR Code section
+   - Download or print QR code
+   - Display at restaurant entrance/tables
+4. **Manage Orders**:
+   - View incoming orders in real-time
+   - Update order status (confirmed, preparing, ready, completed)
+5. **View Reports**:
+   - Daily: Track today's performance
+   - Weekly: Compare weekly trends
+   - Monthly: Monthly revenue analysis
+   - Yearly: Annual performance overview
+
+### Customer Experience
+
+1. **Scan QR Code** at restaurant
+2. **Select Order Type**:
+   - Dine-in (provide table number)
+   - Takeaway
+3. **Browse Menu** by categories
+4. **Add Items** to cart
+5. **Checkout**:
+   - Enter name and phone
+   - Choose payment method
+   - Complete payment
+6. **Receive Confirmation**
+
+## File Structure
+
+```
+qr-restaurant-system/
+├── admin/                      # Admin panel
+│   ├── index.php              # Dashboard
+│   ├── login.php              # Admin login
+│   ├── restaurants.php        # Manage restaurants
+│   └── reports.php            # System reports
+├── restaurant/                 # Restaurant panel
+│   ├── index.php              # Dashboard
+│   ├── login.php              # Restaurant login
+│   ├── menu.php               # Menu management
+│   ├── categories.php         # Category management
+│   ├── orders.php             # Order management
+│   ├── reports.php            # Restaurant reports
+│   └── qr_code.php            # QR code display/print
+├── config/                     # Configuration files
+│   ├── config.php             # Main configuration
+│   └── database.php           # Database connection
+├── includes/                   # Helper classes
+│   ├── auth.php               # Authentication
+│   ├── payment.php            # Payment processing
+│   └── qr_generator.php       # QR code generation
+├── uploads/                    # Upload directory
+│   ├── qr_codes/              # Generated QR codes
+│   ├── menu_images/           # Menu item images
+│   └── logos/                 # Restaurant logos
+├── menu.php                    # Customer-facing menu
+├── process_order.php          # Order processing
+├── payment_callback.php       # Payment verification
+└── database.sql               # Database schema
+```
+
+## Database Schema
+
+### Main Tables
+- **admins**: System administrators
+- **restaurants**: Restaurant accounts
+- **categories**: Menu categories
+- **menu_items**: Food items
+- **orders**: Customer orders
+- **order_items**: Order line items
+- **payments**: Payment transactions
+
+### Reports Views
+- **daily_sales**: Daily aggregation
+- **weekly_sales**: Weekly aggregation
+- **monthly_sales**: Monthly aggregation
+- **yearly_sales**: Yearly aggregation
+
+## Payment Integration
+
+### Paystack (Visa/Mastercard)
+```php
+// Initialize payment
+$payment->initializePaystackPayment($order_id, $amount, $email, $callback_url);
+
+// Verify payment
+$payment->verifyPaystackPayment($reference);
+```
+
+### Mobile Money
+```php
+// Initialize mobile money payment
+$payment->initializeMoMoPayment($order_id, $amount, $phone, $network);
+
+// Check payment status
+$payment->checkMoMoStatus($reference);
+```
+
+## Security Features
+
+- ✅ Password hashing (bcrypt)
+- ✅ SQL injection prevention (PDO prepared statements)
+- ✅ XSS protection (htmlspecialchars)
+- ✅ Session management
+- ✅ Role-based access control
+- ✅ Input validation
+
+## Production Deployment
+
+### Before Going Live:
+
+1. **Change Default Credentials**:
+```sql
+UPDATE admins SET password = '$2y$10$YOUR_HASHED_PASSWORD' WHERE email = 'admin@restaurant.com';
+```
+
+2. **Update Site URL**:
+```php
+define('SITE_URL', 'https://yourrestaurant.com');
+```
+
+3. **Enable HTTPS**:
+```php
+ini_set('session.cookie_secure', 1);
+```
+
+4. **Disable Error Display**:
+```php
+error_reporting(0);
+ini_set('display_errors', 0);
+```
+
+5. **Set Production API Keys**:
+- Use live Paystack keys (pk_live_xxx, sk_live_xxx)
+- Use production Mobile Money credentials
+
+6. **Secure File Permissions**:
+```bash
+chmod 755 uploads/
+chmod 644 config/*.php
+```
+
+7. **Enable SSL Certificate** for HTTPS
+
+## Troubleshooting
+
+### QR Code Not Generating
+- Check phpqrcode library is installed in `vendor/phpqrcode/`
+- Verify write permissions on `uploads/qr_codes/` (chmod 777)
+
+### Payment Failing
+- Verify API keys are correct
+- Check payment gateway is in test/live mode
+- Review error logs in payment gateway dashboard
+
+### Orders Not Showing
+- Check database connection
+- Verify restaurant_id is correct
+- Check order status filters
+
+### Database Connection Error
+- Verify MySQL is running
+- Check database credentials in `config/database.php`
+- Ensure database exists
+
+## Support & Customization
+
+### Adding New Features
+The system is designed to be extensible. Key areas for customization:
+
+- **Payment Gateways**: Add more in `includes/payment.php`
+- **Menu Templates**: Customize `menu.php` styling
+- **Report Types**: Add custom reports in `restaurant/reports.php`
+- **Email Notifications**: Integrate email service for order notifications
+
+### Custom Branding
+- Logo: Update restaurant logo in profile
+- Colors: Modify CSS color schemes
+- Layout: Customize template files
+
+## API Endpoints
+
+### Customer API
+- `GET /menu.php?r=[restaurant_id]` - Display menu
+- `POST /process_order.php` - Submit order
+- `GET /payment_callback.php` - Payment verification
+
+### Restaurant API (Requires Authentication)
+- Dashboard, menu management, orders, reports
+
+### Admin API (Requires Authentication)
+- Restaurant management, system reports
+
+## Performance Optimization
+
+- Enable MySQL query caching
+- Use CDN for static assets
+- Enable gzip compression
+- Optimize images before upload
+- Consider Redis for session storage
+
+## License
+
+This project is provided as-is for use and modification.
+
+## Credits
+
+- Chart.js for reporting charts
+- phpqrcode for QR code generation
+- Paystack for payment processing
+
+## Version
+
+Version 1.0 - Initial Release
+
+## Changelog
+
+### v1.0 (2024)
+- Initial release
+- Admin panel
+- Restaurant management
+- QR code generation
+- Menu management
+- Order processing
+- Payment integration (Visa & Mobile Money)
+- Comprehensive reporting
+
+---
+
+For support or questions, please contact the system administrator.

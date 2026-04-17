@@ -1,0 +1,25 @@
+{
+    "name": "qr-restaurant-system",
+    "description": "QR Code Restaurant Management System with Menu Ordering and Payment Processing",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4.0",
+        "ext-pdo": "*",
+        "ext-gd": "*",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "includes/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"if (!file_exists('uploads/qr_codes')) { mkdir('uploads/qr_codes', 0777, true); }\"",
+            "@php -r \"if (!file_exists('uploads/menu_images')) { mkdir('uploads/menu_images', 0777, true); }\"",
+            "@php -r \"if (!file_exists('uploads/logos')) { mkdir('uploads/logos', 0777, true); }\""
+        ]
+    }
+}
